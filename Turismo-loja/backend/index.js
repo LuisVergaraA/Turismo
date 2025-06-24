@@ -15,7 +15,16 @@ app.use(express.json());
 // Servir archivos estáticos del frontend
 app.use(express.static(path.join(__dirname, '../')));
 
-// Ruta para servir index.html por defecto
+// Rutas explícitas para los archivos HTML principales
+app.get('/perfil.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../perfil.html'));
+});
+app.get('/crea-tu-tour.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../crea-tu-tour.html'));
+});
+app.get('/index.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../index.html'));
+});
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../index.html'));
 });
