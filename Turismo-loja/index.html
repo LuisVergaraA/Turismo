@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plataforma de Tours Virtuales</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Navegación -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Tour Virtual</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#galeria">Galería</a></li>
+          <li class="nav-item"><a class="nav-link" href="#mapa">Mapa</a></li>
+          <li class="nav-item"><a class="nav-link" href="#tours">Tours</a></li>
+          <li class="nav-item"><a class="nav-link" href="#perfil">Perfil</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Página de inicio -->
+  <header class="bg-primary text-white text-center p-5">
+    <h1>Explora el mundo desde casa</h1>
+    <p>Galerías, mapas interactivos y reservas de tours en línea</p>
+    <a href="#registro" class="btn btn-light">Registrarse</a>
+    <a href="#login" class="btn btn-outline-light">Iniciar Sesión</a>
+  </header>
+
+  <!-- Galería -->
+  <section id="galeria" class="container py-5">
+    <h2>Galería de Lugares</h2>
+    <div class="row">
+      <div class="col-md-4"><img src="https://via.placeholder.com/300" class="img-fluid mb-2" alt="Lugar 1"><button class="btn btn-primary w-100">Seleccionar</button></div>
+      <div class="col-md-4"><img src="https://via.placeholder.com/300" class="img-fluid mb-2" alt="Lugar 2"><button class="btn btn-primary w-100">Seleccionar</button></div>
+      <div class="col-md-4"><img src="https://via.placeholder.com/300" class="img-fluid mb-2" alt="Lugar 3"><button class="btn btn-primary w-100">Seleccionar</button></div>
+    </div>
+  </section>
+
+  <!-- Mapa -->
+  <section id="mapa" class="container py-5">
+    <h2>Mapa Interactivo</h2>
+    <div class="ratio ratio-16x9">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63680.99831362746!2d-79.20837875!3d-4.0075952!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cb480661b91d2d%3A0x8e12137cdc1eee09!2sLoja!5e0!3m2!1ses!2sec!4v1750737167595!5m2!1ses!2sec" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </section>
+
+  <!-- Tours -->
+  <section id="tours" class="container py-5">
+    <h2>Catálogo de Tours</h2>
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="ciudadSelect" class="form-label">Selecciona una ciudad</label>
+        <select class="form-select" id="ciudadSelect">
+          <option value="" selected disabled>Elige una ciudad...</option>
+          <option value="loja">Loja (Ciudad Capital)</option>
+          <option value="vilcabamba">Vilcabamba</option>
+          <option value="saraguro">Saraguro</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="actividadSelect" class="form-label">Selecciona una actividad</label>
+        <select class="form-select" id="actividadSelect" disabled>
+          <option value="" selected>Primero selecciona una ciudad</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Tu selección</label>
+        <div class="border rounded p-3 bg-light" id="seleccionResumen">
+          <em>No has seleccionado nada aún.</em>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Perfil de usuario -->
+  <section id="perfil" class="container py-5">
+    <h2>Panel de Usuario</h2>
+    <p>Bienvenido, [Nombre del Usuario]</p>
+    <ul>
+      <li>Historial de tours</li>
+      <li>Método de pago registrado</li>
+      <li>Editar información personal</li>
+    </ul>
+  </section>
+
+  <!-- Pie de página -->
+  <footer class="bg-dark text-white text-center p-4">
+    <p>&copy; 2025 Plataforma de Tours Virtuales. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Opciones de actividades por ciudad
+    const actividades = {
+      loja: [
+        "Catedral y centro histórico",
+        "Parque Jipiro (temático)",
+        "Puerta de la Ciudad",
+        "Museos y centros culturales",
+        "Música y eventos tradicionales"
+      ],
+      vilcabamba: [
+        "Valle de la Longevidad",
+        "Turismo de naturaleza, yoga, caminatas y bienestar",
+        "Clima cálido y relajante"
+      ],
+      saraguro: [
+        "Cultura indígena Saraguro viva",
+        "Gastronomía típica andina",
+        "Talleres de tejidos, música y rituales ancestrales"
+      ],
+      catamayo: [
+        "Clima cálido seco",
+        "Balnearios naturales (río Catamayo)",
+        "Aeropuerto de Loja (Ciudad de Catamayo)"
+      ],
+      zamora: [
+        "Entrada al Parque Nacional Podocarpus",
+        "Biodiversidad única, ideal para ecoturismo y observación de aves"
+      ],
+      calvas: [
+        "Vista panorámica de los Andes",
+        "Fiestas religiosas y naturaleza rural"
+      ],
+      celica: [
+        "Senderismo, bosques secos y miradores",
+        "Cueva del Diablo y formaciones geológicas"
+      ],
+      puyango: [
+        "Bosque Petrificado de Puyango: uno de los más grandes del mundo",
+        "Ideal para geoturismo y fotografía"
+      ],
+      espindola: [
+        "Paisajes de montaña y cafetales",
+        "Senderos naturales y producción de café artesanal"
+      ],
+      quilanga: [
+        "Rutas rurales y paisajes andinos",
+        "Turismo comunitario"
+      ]
+    };
+
+    // Actualiza el select de ciudades
+    const ciudadSelect = document.getElementById('ciudadSelect');
+    const actividadSelect = document.getElementById('actividadSelect');
+    const seleccionResumen = document.getElementById('seleccionResumen');
+
+    // Solo agrega las nuevas ciudades si aún no existen en el select
+    const ciudadesExtra = [
+      { value: "catamayo", label: "Catamayo" },
+      { value: "zamora", label: "Zamora Huayco" },
+      { value: "calvas", label: "Calvas (Cariamanga)" },
+      { value: "celica", label: "Celica" },
+      { value: "puyango", label: "Puyango" },
+      { value: "espindola", label: "Espíndola" },
+      { value: "quilanga", label: "Quilanga" }
+    ];
+    ciudadesExtra.forEach(ciudad => {
+      if (!ciudadSelect.querySelector(`option[value="${ciudad.value}"]`)) {
+        const opt = document.createElement('option');
+        opt.value = ciudad.value;
+        opt.textContent = ciudad.label;
+        ciudadSelect.appendChild(opt);
+      }
+    });
+
+    ciudadSelect.addEventListener('change', function() {
+      const ciudad = this.value;
+      actividadSelect.innerHTML = '';
+      if (ciudad && actividades[ciudad]) {
+        actividadSelect.disabled = false;
+        actividadSelect.innerHTML = '<option value="" selected disabled>Elige una actividad...</option>';
+        actividades[ciudad].forEach(act => {
+          const opt = document.createElement('option');
+          opt.value = act;
+          opt.textContent = act;
+          actividadSelect.appendChild(opt);
+        });
+      } else {
+        actividadSelect.disabled = true;
+        actividadSelect.innerHTML = '<option value="" selected>Primero selecciona una ciudad</option>';
+      }
+      seleccionResumen.innerHTML = '<em>No has seleccionado nada aún.</em>';
+    });
+
+    actividadSelect.addEventListener('change', function() {
+      const ciudad = ciudadSelect.options[ciudadSelect.selectedIndex].text;
+      const actividad = this.value;
+      if (ciudad && actividad) {
+        seleccionResumen.innerHTML = `Has seleccionado: <strong>${actividad}</strong> en <strong>${ciudad}</strong>`;
+      } else {
+        seleccionResumen.innerHTML = '<em>No has seleccionado nada aún.</em>';
+      }
+    });
+  </script>
+</body>
+</html>
