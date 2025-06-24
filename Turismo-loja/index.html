@@ -5,21 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plataforma de Tours Virtuales</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    #carouselLoja .carousel-item img {
+      object-fit: cover;
+      width: 100%;
+      height: 350px;
+      max-height: 350px;
+      background: #222;
+    }
+  </style>
 </head>
 <body>
   <!-- Navegación -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Tour Virtual</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <a class="navbar-brand" href="#">Viaja a Loja</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#galeria">Galería</a></li>
-          <li class="nav-item"><a class="nav-link" href="#mapa">Mapa</a></li>
-          <li class="nav-item"><a class="nav-link" href="#tours">Tours</a></li>
-          <li class="nav-item"><a class="nav-link" href="#perfil">Perfil</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="perfil.html">Mi Perfil</a></li>
+          <li class="nav-item"><a class="nav-link" href="crea-tu-tour.html">Crea tu Tour</a></li>
         </ul>
       </div>
     </div>
@@ -33,61 +41,40 @@
     <a href="#login" class="btn btn-outline-light">Iniciar Sesión</a>
   </header>
 
-  <!-- Galería -->
-  <section id="galeria" class="container py-5">
-    <h2>Galería de Lugares</h2>
-    <div class="row">
-      <div class="col-md-4"><img src="https://via.placeholder.com/300" class="img-fluid mb-2" alt="Lugar 1"><button class="btn btn-primary w-100">Seleccionar</button></div>
-      <div class="col-md-4"><img src="https://via.placeholder.com/300" class="img-fluid mb-2" alt="Lugar 2"><button class="btn btn-primary w-100">Seleccionar</button></div>
-      <div class="col-md-4"><img src="https://via.placeholder.com/300" class="img-fluid mb-2" alt="Lugar 3"><button class="btn btn-primary w-100">Seleccionar</button></div>
-    </div>
-  </section>
-
-  <!-- Mapa -->
-  <section id="mapa" class="container py-5">
-    <h2>Mapa Interactivo</h2>
-    <div class="ratio ratio-16x9">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63680.99831362746!2d-79.20837875!3d-4.0075952!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cb480661b91d2d%3A0x8e12137cdc1eee09!2sLoja!5e0!3m2!1ses!2sec!4v1750737167595!5m2!1ses!2sec" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div>
-  </section>
-
-  <!-- Tours -->
-  <section id="tours" class="container py-5">
-    <h2>Catálogo de Tours</h2>
-    <div class="row mb-3">
-      <div class="col-md-4">
-        <label for="ciudadSelect" class="form-label">Selecciona una ciudad</label>
-        <select class="form-select" id="ciudadSelect">
-          <option value="" selected disabled>Elige una ciudad...</option>
-          <option value="loja">Loja (Ciudad Capital)</option>
-          <option value="vilcabamba">Vilcabamba</option>
-          <option value="saraguro">Saraguro</option>
-        </select>
+  <!-- Reseña de Loja -->
+  <section class="container py-5">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <h2>Descubre Loja</h2>
+        <p>Loja, conocida como la "Capital Musical y Cultural del Ecuador", es una ciudad llena de historia, arte y naturaleza. Rodeada de montañas y valles, Loja ofrece una mezcla única de tradiciones, arquitectura colonial, parques temáticos y una vibrante vida cultural. Es el punto de partida ideal para explorar el sur del país y disfrutar de su hospitalidad, gastronomía y paisajes inolvidables.</p>
       </div>
-      <div class="col-md-4">
-        <label for="actividadSelect" class="form-label">Selecciona una actividad</label>
-        <select class="form-select" id="actividadSelect" disabled>
-          <option value="" selected>Primero selecciona una ciudad</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Tu selección</label>
-        <div class="border rounded p-3 bg-light" id="seleccionResumen">
-          <em>No has seleccionado nada aún.</em>
+      <div class="col-md-6">
+        <div id="carouselLoja" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Loja_Ecuador_Panoramica.jpg" class="d-block w-100 rounded" alt="Panorámica de Loja">
+            </div>
+            <div class="carousel-item">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Parque_Jipiro_Loja.jpg" class="d-block w-100 rounded" alt="Parque Jipiro">
+            </div>
+            <div class="carousel-item">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Catedral_de_Loja.jpg" class="d-block w-100 rounded" alt="Catedral de Loja">
+            </div>
+            <div class="carousel-item">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Puerta_de_la_Ciudad_Loja.jpg" class="d-block w-100 rounded" alt="Puerta de la Ciudad">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselLoja" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselLoja" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Siguiente</span>
+          </button>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- Perfil de usuario -->
-  <section id="perfil" class="container py-5">
-    <h2>Panel de Usuario</h2>
-    <p>Bienvenido, [Nombre del Usuario]</p>
-    <ul>
-      <li>Historial de tours</li>
-      <li>Método de pago registrado</li>
-      <li>Editar información personal</li>
-    </ul>
   </section>
 
   <!-- Pie de página -->
