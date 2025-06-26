@@ -28,6 +28,12 @@ app.get('/index.html', (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../index.html'));
 });
+app.get('/pasaporte.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../pasaporte.html'));
+});
+app.get('/tour.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../tour.html'));
+});
 
 // Endpoint de ejemplo
 app.get('/api/saludo', (req, res) => {
