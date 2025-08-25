@@ -3,100 +3,1115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tour - Plataforma de Tours Virtuales</title>
+  <title>Tour Actual - Viaja a Loja</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #2E7D32;
+      --secondary-color: #FFA726;
+      --accent-color: #00ACC1;
+      --success-color: #4CAF50;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding-top: 76px;
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    }
+    
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    
+    .tour-header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+      color: white;
+      padding: 3rem 0;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .tour-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M20,20 Q50,10 80,20 Q90,50 80,80 Q50,90 20,80 Q10,50 20,20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>');
+      background-size: 150px 150px;
+      animation: float 20s infinite linear;
+    }
+    
+    @keyframes float {
+      0% { transform: translateX(0px); }
+      100% { transform: translateX(-150px); }
+    }
+    
+    .status-badge {
+      background: linear-gradient(45deg, var(--success-color), #66BB6A);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 25px;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+    
+    .info-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      border: none;
+      overflow: hidden;
+    }
+    
+    .info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+    
+    .info-card-header {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 1.5rem;
+      border-bottom: 1px solid #dee2e6;
+    }
+    
+    .activity-item {
+      padding: 1rem 1.5rem;
+      border-left: 4px solid var(--primary-color);
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #f8f9fa 0%, white 100%);
+      border-radius: 0 10px 10px 0;
+      transition: all 0.3s ease;
+    }
+    
+    .activity-item:hover {
+      background: linear-gradient(135deg, #e8f5e8 0%, #f1f8e9 100%);
+      transform: translateX(5px);
+    }
+    
+    .activity-item.completed {
+      border-left-color: var(--success-color);
+      background: linear-gradient(135deg, #e8f5e8 0%, #f1f8e9 100%);
+    }
+    
+    .activity-item.completed::after {
+      content: '✓';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--success-color);
+      color: white;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    
+    .schedule-table {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .schedule-table .table {
+      margin-bottom: 0;
+    }
+    
+    .schedule-table .table thead th {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+      color: white;
+      border: none;
+      padding: 1rem;
+      font-weight: 600;
+    }
+    
+    .schedule-table .table tbody td {
+      padding: 1rem;
+      border-color: #f8f9fa;
+      vertical-align: middle;
+    }
+    
+    .time-badge {
+      background: linear-gradient(45deg, var(--secondary-color), #FFB74D);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    
+    .current-time {
+      background: linear-gradient(45deg, #e91e63, #ec407a) !important;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(233, 30, 99, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(233, 30, 99, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(233, 30, 99, 0); }
+    }
+    
+    .guide-card {
+      background: linear-gradient(145deg, white 0%, #f8f9fa 100%);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      border: none;
+      text-align: center;
+    }
+    
+    .guide-avatar {
+      width: 100px;
+      height: 100px;
+      border: 4px solid var(--primary-color);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+    }
+    
+    .guide-avatar:hover {
+      transform: scale(1.1);
+    }
+    
+    .hotel-card {
+      background: linear-gradient(145deg, #fff3e0 0%, #ffe0b2 100%);
+      border: 2px solid var(--secondary-color);
+      border-radius: 15px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .hotel-card:hover {
+      background: linear-gradient(145deg, #ffecb3 0%, #ffd54f 100%);
+      transform: translateY(-3px);
+    }
+    
+    .progress-section {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+    
+    .progress-bar-custom {
+      height: 10px;
+      border-radius: 5px;
+      background: #e9ecef;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+      border-radius: 5px;
+      transition: width 0.8s ease;
+    }
+    
+    .weather-widget {
+      background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+      color: white;
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    
+    .action-buttons .btn {
+      border-radius: 25px;
+      padding: 12px 25px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .floating-actions {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    
+    .floating-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+      transition: all 0.3s ease;
+      margin-bottom: 10px;
+    }
+    
+    .floating-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    }
+    
+    .map-preview {
+      height: 200px;
+      background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed var(--primary-color);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .map-preview:hover {
+      background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+    }
+    
+    .notification-toast {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      z-index: 1055;
+      min-width: 300px;
+    }
+  </style>
 </head>
 <body>
+  <!-- Toast de notificaciones -->
+  <div id="notification-container" class="notification-toast"></div>
+
   <!-- Navegación -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Viaja a Loja</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+    <div class="container">
+      <a class="navbar-brand" href="./index.html">
+        <i class="bi bi-compass"></i> Viaja a Loja
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="/index.html">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="/perfil.html">Mi Perfil</a></li>
-          <li class="nav-item"><a class="nav-link" href="/crea-tu-tour.html">Crea tu Tour</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="./index.html">
+              <i class="bi bi-house"></i> Inicio
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./perfil.html">
+              <i class="bi bi-person"></i> Mi Perfil
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./crea-tu-tour.html">
+              <i class="bi bi-map"></i> Crea tu Tour
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./pasaporte.html">
+              <i class="bi bi-award"></i> Pasaporte
+            </a>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <main class="container py-5">
-    <h1 class="mb-4">Tour Actual: Ruta Sur de Loja</h1>
-    <div class="row">
-      <div class="col-md-7">
-        <h4>Itinerario por ciudades</h4>
-        <ul class="list-group mb-3">
-          <li class="list-group-item">
-            <strong>Loja:</strong> Catedral, Puerta de la Ciudad, Parque Jipiro
-          </li>
-          <li class="list-group-item">
-            <strong>Vilcabamba:</strong> Valle de la Longevidad, Sendero Mandango
-          </li>
-          <li class="list-group-item">
-            <strong>Saraguro:</strong> Plaza Central, Taller de Tejidos
-          </li>
-        </ul>
-        <h5>Hotel de hospedaje</h5>
-        <p>Hotel Libertador, Loja</p>
-        <h5>Guía turístico</h5>
-        <p>María González (Lic. en Turismo, 10 años de experiencia)</p>
-      </div>
-      <div class="col-md-5">
-        <h4>Agenda del día</h4>
-        <table class="table table-bordered text-center">
-          <thead class="table-light">
-            <tr>
-              <th>Hora</th>
-              <th>Actividad</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>08:00</td>
-              <td>Desayuno en el hotel</td>
-            </tr>
-            <tr>
-              <td>09:00</td>
-              <td>Visita a la Catedral de Loja</td>
-            </tr>
-            <tr>
-              <td>11:00</td>
-              <td>Recorrido por el Parque Jipiro</td>
-            </tr>
-            <tr>
-              <td>13:00</td>
-              <td>Almuerzo típico lojano</td>
-            </tr>
-            <tr>
-              <td>15:00</td>
-              <td>Traslado a Vilcabamba</td>
-            </tr>
-            <tr>
-              <td>16:00</td>
-              <td>Sendero Mandango</td>
-            </tr>
-            <tr>
-              <td>18:00</td>
-              <td>Check-in en el hotel</td>
-            </tr>
-            <tr>
-              <td>20:00</td>
-              <td>Cena y descanso</td>
-            </tr>
-          </tbody>
-        </table>
+  <!-- Header del Tour -->
+  <section class="tour-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-8" data-aos="fade-right">
+          <div class="position-relative z-1">
+            <div class="status-badge mb-3">
+              <i class="bi bi-play-circle-fill"></i>
+              Tour en Progreso
+            </div>
+            <h1 class="display-5 fw-bold mb-3">Ruta Sur de Loja</h1>
+            <p class="lead mb-4">
+              Un viaje fascinante por la historia, cultura y naturaleza del sur ecuatoriano
+            </p>
+            <div class="d-flex gap-3 flex-wrap">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-calendar3"></i>
+                <span>3 días / 2 noches</span>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-people"></i>
+                <span>Grupo de 8 personas</span>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-geo-alt"></i>
+                <span>3 ciudades</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4" data-aos="fade-left">
+          <div class="weather-widget position-relative z-1">
+            <div class="d-flex align-items-center justify-content-center mb-3">
+              <i class="bi bi-sun-fill fs-1 me-3"></i>
+              <div>
+                <div class="h2 mb-0">24°C</div>
+                <div>Soleado</div>
+              </div>
+            </div>
+            <div class="row text-center">
+              <div class="col-4">
+                <div class="small">Hoy</div>
+                <div>☀️ 24°</div>
+              </div>
+              <div class="col-4">
+                <div class="small">Mañana</div>
+                <div>🌤️ 22°</div>
+              </div>
+              <div class="col-4">
+                <div class="small">Pasado</div>
+                <div>🌦️ 19°</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <a href="/pasaporte.html" class="btn btn-secondary mt-4">Volver a Pasaporte</a>
-  </main>
+  </section>
 
-  <footer class="bg-dark text-white text-center p-4">
-    <p>&copy; 2025 Plataforma de Tours Virtuales. Todos los derechos reservados.</p>
-  </footer>
+  <div class="container pb-5">
+    <!-- Progreso del Tour -->
+    <div class="progress-section" data-aos="fade-up">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">
+          <i class="bi bi-list-check text-primary"></i>
+          Progreso del Tour
+        </h4>
+        <span class="badge bg-primary fs-6">Día 2 de 3</span>
+      </div>
+      <div class="progress-bar-custom mb-3">
+        <div class="progress-fill" style="width: 65%"></div>
+      </div>
+      <div class="d-flex justify-content-between text-muted">
+        <span>Inicio</span>
+        <span class="fw-bold text-primary">65% Completado</span>
+        <span>Final</span>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Itinerario Principal -->
+      <div class="col-lg-8">
+        <div class="info-card mb-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="info-card-header">
+            <h4 class="mb-0">
+              <i class="bi bi-route text-primary"></i>
+              Itinerario por Ciudades
+            </h4>
+          </div>
+          <div class="p-4">
+            <div class="activity-item completed position-relative">
+              <div class="d-flex align-items-center gap-3">
+                <div class="text-primary">
+                  <i class="bi bi-building fs-2"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="fw-bold mb-1">Loja - Capital Cultural</h5>
+                  <p class="text-muted mb-2">Catedral, Puerta de la Ciudad, Parque Jipiro</p>
+                  <div class="d-flex gap-2">
+                    <span class="badge bg-success">Completado</span>
+                    <span class="badge bg-info">8 fotos</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="activity-item position-relative" style="border-left-color: var(--secondary-color);">
+              <div class="d-flex align-items-center gap-3">
+                <div class="text-warning">
+                  <i class="bi bi-tree fs-2"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="fw-bold mb-1">Vilcabamba - Valle de la Longevidad</h5>
+                  <p class="text-muted mb-2">Valle sagrado, Sendero Mandango, Spa natural</p>
+                  <div class="d-flex gap-2">
+                    <span class="badge bg-warning text-dark">En progreso</span>
+                    <span class="badge bg-outline-primary">Día actual</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="activity-item">
+              <div class="d-flex align-items-center gap-3">
+                <div class="text-muted">
+                  <i class="bi bi-people fs-2"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="fw-bold mb-1 text-muted">Saraguro - Cultura Ancestral</h5>
+                  <p class="text-muted mb-2">Plaza Central, Taller de Tejidos, Gastronomía típica</p>
+                  <div class="d-flex gap-2">
+                    <span class="badge bg-secondary">Pendiente</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agenda Detallada -->
+        <div class="info-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="info-card-header">
+            <h4 class="mb-0">
+              <i class="bi bi-clock text-primary"></i>
+              Agenda de Hoy - Día 2
+            </h4>
+          </div>
+          <div class="schedule-table">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="20%">Hora</th>
+                  <th width="50%">Actividad</th>
+                  <th width="30%">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="time-badge">08:00</span>
+                  </td>
+                  <td>
+                    <strong>Desayuno continental</strong><br>
+                    <small class="text-muted">Hotel Madre Tierra - Vilcabamba</small>
+                  </td>
+                  <td>
+                    <span class="badge bg-success">
+                      <i class="bi bi-check-circle"></i> Completado
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="time-badge">09:30</span>
+                  </td>
+                  <td>
+                    <strong>Caminata por el Valle</strong><br>
+                    <small class="text-muted">Sendero ecológico guiado</small>
+                  </td>
+                  <td>
+                    <span class="badge bg-success">
+                      <i class="bi bi-check-circle"></i> Completado
+                    </span>
+                  </td>
+                </tr>
+                <tr style="background-color: #fff3cd;">
+                  <td>
+                    <span class="time-badge current-time">12:00</span>
+                  </td>
+                  <td>
+                    <strong>Almuerzo típico</strong><br>
+                    <small class="text-muted">Restaurante La Terraza</small>
+                  </td>
+                  <td>
+                    <span class="badge bg-warning text-dark">
+                      <i class="bi bi-clock"></i> En curso
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="time-badge">14:30</span>
+                  </td>
+                  <td>
+                    <strong>Visita al Cerro Mandango</strong><br>
+                    <small class="text-muted">Ascenso y vista panorámica</small>
+                  </td>
+                  <td>
+                    <span class="badge bg-secondary">
+                      <i class="bi bi-hourglass-split"></i> Próximo
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="time-badge">17:00</span>
+                  </td>
+                  <td>
+                    <strong>Sesión de relajación</strong><br>
+                    <small class="text-muted">Spa natural y aguas termales</small>
+                  </td>
+                  <td>
+                    <span class="badge bg-secondary">
+                      <i class="bi bi-hourglass-split"></i> Próximo
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="time-badge">19:30</span>
+                  </td>
+                  <td>
+                    <strong>Cena y descanso</strong><br>
+                    <small class="text-muted">Hotel Madre Tierra</small>
+                  </td>
+                  <td>
+                    <span class="badge bg-secondary">
+                      <i class="bi bi-hourglass-split"></i> Próximo
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel Lateral -->
+      <div class="col-lg-4">
+        <!-- Información del Guía -->
+        <div class="guide-card mb-4" data-aos="fade-up" data-aos-delay="300">
+          <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Guía turística" class="rounded-circle guide-avatar mb-3">
+          <h5 class="fw-bold">María González</h5>
+          <p class="text-muted mb-3">Guía Turística Certificada</p>
+          <div class="mb-3">
+            <div class="text-warning mb-2">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <small class="text-muted ms-2">4.9 (127 reseñas)</small>
+            </div>
+          </div>
+          <div class="row text-center mb-3">
+            <div class="col-6">
+              <div class="fw-bold text-primary">10</div>
+              <small class="text-muted">Años experiencia</small>
+            </div>
+            <div class="col-6">
+              <div class="fw-bold text-primary">500+</div>
+              <small class="text-muted">Tours realizados</small>
+            </div>
+          </div>
+          <div class="d-flex gap-2 justify-content-center">
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#contactModal">
+              <i class="bi bi-chat"></i> Contactar
+            </button>
+            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#guideModal">
+              <i class="bi bi-info-circle"></i> Más info
+            </button>
+          </div>
+        </div>
+
+        <!-- Hotel de Hospedaje -->
+        <div class="hotel-card mb-4" data-aos="fade-up" data-aos-delay="400">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <i class="bi bi-building fs-2 text-warning"></i>
+            <div>
+              <h5 class="fw-bold mb-0">Hotel Madre Tierra</h5>
+              <div class="text-warning">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>
+                <small class="text-muted ms-1">4.5</small>
+              </div>
+            </div>
+          </div>
+          <p class="mb-3">
+            <i class="bi bi-geo-alt me-2"></i>
+            <small>Valle de Vilcabamba, Ecuador</small>
+          </p>
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <small class="text-muted">Check-in:</small><br>
+              <strong>15:00</strong>
+            </div>
+            <div class="col-6">
+              <small class="text-muted">Check-out:</small><br>
+              <strong>11:00</strong>
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-warning btn-sm flex-grow-1">
+              <i class="bi bi-telephone"></i> Llamar
+            </button>
+            <button class="btn btn-warning btn-sm">
+              <i class="bi bi-info-circle"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mapa Interactivo -->
+        <div class="info-card mb-4" data-aos="fade-up" data-aos-delay="500">
+          <div class="p-3">
+            <h5 class="mb-3">
+              <i class="bi bi-map text-primary"></i>
+              Ubicación Actual
+            </h5>
+            <div class="map-preview" onclick="openMap()">
+              <div class="text-center">
+                <i class="bi bi-geo-alt-fill fs-1 text-primary mb-2"></i>
+                <p class="mb-0 fw-bold">Vilcabamba</p>
+                <small class="text-muted">Clic para ver mapa completo</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acciones Rápidas -->
+        <div class="action-buttons d-grid gap-2" data-aos="fade-up" data-aos-delay="600">
+          <a href="./pasaporte.html" class="btn btn-success">
+            <i class="bi bi-award me-2"></i>
+            Actualizar Pasaporte
+          </a>
+          <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#photosModal">
+            <i class="bi bi-camera me-2"></i>
+            Subir Fotos
+          </button>
+          <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#emergencyModal">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Contacto de Emergencia
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones Flotantes -->
+  <div class="floating-actions">
+    <button class="floating-btn" style="background: var(--success-color);" data-bs-toggle="modal" data-bs-target="#checkInModal" title="Check-in automático">
+      <i class="bi bi-geo-alt"></i>
+    </button>
+    <button class="floating-btn" style="background: var(--accent-color);" onclick="shareLocation()" title="Compartir ubicación">
+      <i class="bi bi-share"></i>
+    </button>
+    <button class="floating-btn" style="background: var(--secondary-color);" data-bs-toggle="modal" data-bs-target="#helpModal" title="Ayuda rápida">
+      <i class="bi bi-question-circle"></i>
+    </button>
+  </div>
+
+  <!-- Modales -->
+  
+  <!-- Modal de Check-in -->
+  <div class="modal fade" id="checkInModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title">
+            <i class="bi bi-geo-alt"></i> Check-in Automático
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <i class="bi bi-geo-alt-fill display-1 text-success mb-3"></i>
+          <h5>¿Confirmas tu ubicación?</h5>
+          <p class="text-muted">Detectamos que estás en <strong>Restaurante La Terraza</strong></p>
+          <div class="d-grid gap-2 mt-4">
+            <button class="btn btn-success" onclick="confirmCheckIn()">
+              <i class="bi bi-check-circle"></i> Sí, hacer check-in
+            </button>
+            <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Contacto con Guía -->
+  <div class="modal fade" id="contactModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi bi-chat"></i> Contactar a María
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-grid gap-3">
+            <button class="btn btn-success" onclick="callGuide()">
+              <i class="bi bi-telephone me-2"></i>
+              Llamar: +593 987-654-321
+            </button>
+            <button class="btn btn-primary" onclick="whatsappGuide()">
+              <i class="bi bi-whatsapp me-2"></i>
+              WhatsApp
+            </button>
+            <button class="btn btn-info" onclick="emailGuide()">
+              <i class="bi bi-envelope me-2"></i>
+              Email
+            </button>
+          </div>
+          <div class="mt-4 p-3 bg-light rounded">
+            <h6>Mensaje rápido:</h6>
+            <textarea class="form-control" rows="3" placeholder="Escribe tu mensaje..."></textarea>
+            <button class="btn btn-primary btn-sm mt-2 w-100">Enviar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Fotos -->
+  <div class="modal fade" id="photosModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi bi-camera"></i> Subir Fotos del Tour
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-4">
+            <div class="border-dashed p-4 rounded" style="border: 2px dashed #dee2e6;">
+              <i class="bi bi-cloud-upload display-1 text-muted"></i>
+              <p class="mt-2">Arrastra tus fotos aquí o haz clic para seleccionar</p>
+              <input type="file" class="form-control" multiple accept="image/*">
+            </div>
+          </div>
+          <div class="row g-2" id="photoPreview">
+            <!-- Las fotos aparecerán aquí -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-primary">
+            <i class="bi bi-upload"></i> Subir Fotos
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Emergencia -->
+  <div class="modal fade" id="emergencyModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title">
+            <i class="bi bi-exclamation-triangle"></i> Contactos de Emergencia
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="list-group list-group-flush">
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-1">Emergencias ECU-911</h6>
+                <small class="text-muted">Bomberos, Policía, Ambulancia</small>
+              </div>
+              <button class="btn btn-danger btn-sm" onclick="call('911')">
+                <i class="bi bi-telephone"></i> 911
+              </button>
+            </div>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-1">Guía María González</h6>
+                <small class="text-muted">Guía principal del tour</small>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="call('+593987654321')">
+                <i class="bi bi-telephone"></i> Llamar
+              </button>
+            </div>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-1">Oficina Viaja a Loja</h6>
+                <small class="text-muted">Soporte 24/7</small>
+              </div>
+              <button class="btn btn-success btn-sm" onclick="call('+59372570275')">
+                <i class="bi bi-telephone"></i> Llamar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Ayuda -->
+  <div class="modal fade" id="helpModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi bi-question-circle"></i> Ayuda Rápida
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="accordion" id="helpAccordion">
+            <div class="accordion-item">
+              <h6 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#help1">
+                  ¿Cómo hacer check-in automático?
+                </button>
+              </h6>
+              <div id="help1" class="accordion-collapse collapse show" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                  El sistema detecta automáticamente tu ubicación cuando llegas a cada punto del tour. Solo confirma tu presencia cuando aparezca la notificación.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h6 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#help2">
+                  ¿Qué hago si me pierdo del grupo?
+                </button>
+              </h6>
+              <div id="help2" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                  Usa el botón de compartir ubicación y contacta inmediatamente a tu guía María González al +593 987-654-321.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h6 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#help3">
+                  ¿Cómo subo mis fotos?
+                </button>
+              </h6>
+              <div id="help3" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                  Usa el botón "Subir Fotos" o el ícono de cámara flotante. Las fotos se sincronizarán con tu pasaporte digital.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Información del Guía -->
+  <div class="modal fade" id="guideModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi bi-person-badge"></i> María González - Perfil Completo
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4 text-center">
+              <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="María González" class="rounded-circle mb-3" width="120" height="120">
+              <div class="text-warning mb-2">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+              </div>
+              <p class="small text-muted">4.9/5.0 (127 reseñas)</p>
+            </div>
+            <div class="col-md-8">
+              <h5>Experiencia y Certificaciones</h5>
+              <ul class="list-unstyled">
+                <li>📍 <strong>Especialidad:</strong> Historia y Cultura del Sur de Ecuador</li>
+                <li>🎓 <strong>Certificaciones:</strong> Guía Nacional de Turismo</li>
+                <li>🗣️ <strong>Idiomas:</strong> Español, Inglés, Quechua básico</li>
+                <li>⏰ <strong>Experiencia:</strong> 10 años en turismo cultural</li>
+                <li>🏆 <strong>Tours realizados:</strong> Más de 500 tours exitosos</li>
+              </ul>
+              
+              <h6 class="mt-4">Últimas Reseñas</h6>
+              <div class="border-start border-primary border-3 ps-3 mb-2">
+                <p class="mb-1"><em>"María conoce cada rincón de Loja. Excelente guía!"</em></p>
+                <small class="text-muted">- Carlos M., hace 1 semana</small>
+              </div>
+              <div class="border-start border-primary border-3 ps-3">
+                <p class="mb-1"><em>"Muy profesional y amable. Recomendada 100%"</em></p>
+                <small class="text-muted">- Ana S., hace 2 semanas</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    // Inicializar AOS
+    AOS.init({ duration: 800, once: true });
+
+    // Funciones principales
+    function showNotification(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast align-items-center text-white bg-${type} border-0`;
+      toast.setAttribute('role', 'alert');
+      toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">
+            <i class="bi bi-${type === 'success' ? 'check-circle' : 'info-circle'} me-2"></i>
+            ${message}
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+      `;
+      
+      document.getElementById('notification-container').appendChild(toast);
+      const bsToast = new bootstrap.Toast(toast);
+      bsToast.show();
+      
+      setTimeout(() => {
+        toast.remove();
+      }, 5000);
+    }
+
+    function confirmCheckIn() {
+      showNotification('Check-in confirmado en Restaurante La Terraza');
+      bootstrap.Modal.getInstance(document.getElementById('checkInModal')).hide();
+      
+      // Actualizar progreso
+      setTimeout(() => {
+        const progressBar = document.querySelector('.progress-fill');
+        progressBar.style.width = '70%';
+      }, 500);
+    }
+
+    function shareLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const message = `Mi ubicación actual: https://maps.google.com/?q=${lat},${lng}`;
+          
+          if (navigator.share) {
+            navigator.share({
+              title: 'Mi ubicación en el tour',
+              text: message
+            });
+          } else {
+            // Fallback: copiar al portapapeles
+            navigator.clipboard.writeText(message);
+            showNotification('Ubicación copiada al portapapeles');
+          }
+        }, function() {
+          showNotification('No se pudo obtener la ubicación', 'warning');
+        });
+      } else {
+        showNotification('Geolocalización no soportada', 'warning');
+      }
+    }
+
+    function openMap() {
+      // Abrir Google Maps con la ubicación de Vilcabamba
+      const lat = -4.2625;
+      const lng = -79.2222;
+      window.open(`https://maps.google.com/?q=${lat},${lng}&z=15`, '_blank');
+    }
+
+    function callGuide() {
+      window.location.href = 'tel:+593987654321';
+    }
+
+    function whatsappGuide() {
+      const message = encodeURIComponent('Hola María, necesito ayuda con el tour.');
+      window.open(`https://wa.me/593987654321?text=${message}`, '_blank');
+    }
+
+    function emailGuide() {
+      window.location.href = 'mailto:maria.gonzalez@viajaloja.com?subject=Consulta sobre el tour';
+    }
+
+    function call(number) {
+      window.location.href = `tel:${number}`;
+    }
+
+    // Simulador de tiempo real
+    function updateCurrentTime() {
+      const now = new Date();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+      const currentTime = currentHour * 100 + currentMinute;
+
+      // Horarios del tour
+      const schedule = [
+        { time: 800, name: 'Desayuno' },
+        { time: 930, name: 'Caminata' },
+        { time: 1200, name: 'Almuerzo' },
+        { time: 1430, name: 'Cerro Mandango' },
+        { time: 1700, name: 'Spa' },
+        { time: 1930, name: 'Cena' }
+      ];
+
+      // Encontrar actividad actual
+      let currentActivity = null;
+      for (let i = 0; i < schedule.length; i++) {
+        if (currentTime >= schedule[i].time && (i === schedule.length - 1 || currentTime < schedule[i + 1].time)) {
+          currentActivity = schedule[i];
+          break;
+        }
+      }
+
+      // Actualizar badge de tiempo actual si es necesario
+      if (currentActivity) {
+        console.log(`Actividad actual: ${currentActivity.name}`);
+      }
+    }
+
+    // Manejo de subida de fotos
+    document.querySelector('#photosModal input[type="file"]').addEventListener('change', function(e) {
+      const files = e.target.files;
+      const preview = document.getElementById('photoPreview');
+      preview.innerHTML = '';
+
+      for (let i = 0; i < Math.min(files.length, 6); i++) {
+        const file = files[i];
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          const div = document.createElement('div');
+          div.className = 'col-4';
+          div.innerHTML = `
+            <img src="${e.target.result}" class="img-fluid rounded" style="height: 100px; object-fit: cover; width: 100%;">
+          `;
+          preview.appendChild(div);
+        };
+        
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Actualizar tiempo cada minuto
+    updateCurrentTime();
+    setInterval(updateCurrentTime, 60000);
+
+    // Simular notificaciones push del tour
+    setTimeout(() => {
+      showNotification('📍 Te acercas al Cerro Mandango. ¡Prepárate para una vista increíble!', 'info');
+    }, 10000);
+
+    setTimeout(() => {
+      showNotification('📸 ¡No olvides tomar fotos para tu pasaporte digital!', 'info');
+    }, 20000);
+
+    // Efecto de progreso automático (simulación)
+    let progress = 65;
+    setInterval(() => {
+      if (progress < 100) {
+        progress += 0.1;
+        document.querySelector('.progress-fill').style.width = progress + '%';
+      }
+    }, 30000); // Incrementa cada 30 segundos
+  </script>
 </body>
 </html>

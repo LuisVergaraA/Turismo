@@ -5,43 +5,850 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi Perfil - Viaja a Loja</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #2E7D32;
+      --secondary-color: #FFA726;
+      --accent-color: #00ACC1;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding-top: 76px;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    
+    .profile-header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+      color: white;
+      padding: 3rem 0;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .profile-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="white" opacity="0.1"/></svg>');
+    }
+    
+    .profile-avatar {
+      width: 150px;
+      height: 150px;
+      border: 5px solid white;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .profile-avatar:hover {
+      transform: scale(1.05);
+    }
+    
+    .profile-avatar .edit-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 50%;
+    }
+    
+    .profile-avatar:hover .edit-overlay {
+      opacity: 1;
+    }
+    
+    .info-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      border: none;
+    }
+    
+    .info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .stat-card {
+      background: linear-gradient(145deg, white 0%, #f8f9fa 100%);
+      border: none;
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    .btn-custom {
+      border-radius: 25px;
+      padding: 12px 25px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .activity-timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    
+    .activity-timeline::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--primary-color);
+    }
+    
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.25rem;
+      top: 1.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--secondary-color);
+      border: 3px solid white;
+      box-shadow: 0 0 0 2px var(--primary-color);
+    }
+    
+    .badge-custom {
+      background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    
+    .preferences-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    
+    .preference-item {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .preference-item:hover, .preference-item.active {
+      border-color: var(--primary-color);
+      background: #f8f9fa;
+    }
+    
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(45deg, #FFD700, #FFA500);
+      color: #333;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Viaja a Loja</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <!-- Navegación -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+    <div class="container">
+      <a class="navbar-brand" href="./index.html">
+        <i class="bi bi-compass"></i> Viaja a Loja
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="/index.html">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="/perfil.html">Mi Perfil</a></li>
-          <li class="nav-item"><a class="nav-link" href="/crea-tu-tour.html">Crea tu Tour</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="./index.html">
+              <i class="bi bi-house"></i> Inicio
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="./perfil.html">
+              <i class="bi bi-person"></i> Mi Perfil
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./crea-tu-tour.html">
+              <i class="bi bi-map"></i> Crea tu Tour
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./pasaporte.html">
+              <i class="bi bi-award"></i> Pasaporte
+            </a>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
-  <div class="container py-5">
-    <h1>Mi Perfil</h1>
-    <div class="row justify-content-center">
-      <div class="col-md-4 text-center">
-        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Foto de usuario" class="rounded-circle mb-3" width="150" height="150">
+
+  <!-- Header del Perfil -->
+  <section class="profile-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-3 text-center" data-aos="fade-right">
+          <div class="profile-avatar rounded-circle mx-auto mb-3 position-relative" data-bs-toggle="modal" data-bs-target="#avatarModal">
+            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Foto de perfil" class="w-100 h-100 object-fit-cover rounded-circle">
+            <div class="edit-overlay">
+              <i class="bi bi-camera text-white fs-3"></i>
+            </div>
+          </div>
+          <div class="level-badge">
+            <i class="bi bi-star-fill"></i>
+            Explorador Nivel 3
+          </div>
+        </div>
+        <div class="col-md-6" data-aos="fade-up">
+          <h1 class="display-6 fw-bold mb-2">Juan Carlos Pérez</h1>
+          <p class="lead mb-3">
+            <i class="bi bi-geo-alt me-2"></i>
+            Loja, Ecuador
+          </p>
+          <p class="mb-4">Amante de la cultura y la naturaleza. Siempre buscando nuevas aventuras por el hermoso sur de Ecuador.</p>
+          <div class="d-flex gap-2 flex-wrap">
+            <span class="badge-custom">🏛️ Historia</span>
+            <span class="badge-custom">🌿 Naturaleza</span>
+            <span class="badge-custom">🎨 Cultura</span>
+            <span class="badge-custom">📸 Fotografía</span>
+          </div>
+        </div>
+        <div class="col-md-3 text-center" data-aos="fade-left">
+          <div class="row g-2">
+            <div class="col-6">
+              <div class="text-center">
+                <div class="h2 fw-bold">15</div>
+                <small>Tours</small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-center">
+                <div class="h2 fw-bold">8</div>
+                <small>Ciudades</small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-center">
+                <div class="h2 fw-bold">156</div>
+                <small>Puntos</small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-center">
+                <div class="h2 fw-bold">12</div>
+                <small>Logros</small>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6">
-        <ul class="list-group mb-4">
-          <li class="list-group-item"><strong>Nombre:</strong> Juan Pérez</li>
-          <li class="list-group-item"><strong>Cédula:</strong> 1102345678</li>
-          <li class="list-group-item"><strong>Email:</strong> juan.perez@email.com</li>
-          <li class="list-group-item"><strong>Teléfono:</strong> 0991234567</li>
-          <li class="list-group-item"><strong>Dirección:</strong> Av. Loja y Calle Central</li>
-        </ul>
-        <div class="d-flex gap-3">
-          <a href="/tour.html" class="btn btn-primary">Tour Actual</a>
-          <a href="/pasaporte.html" class="btn btn-secondary">Mi Pasaporte</a>
+    </div>
+  </section>
+
+  <div class="container pb-5">
+    <div class="row g-4">
+      <!-- Información Personal -->
+      <div class="col-lg-4">
+        <div class="info-card p-4 mb-4" data-aos="fade-up">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">
+              <i class="bi bi-person-lines-fill text-primary"></i> Información Personal
+            </h5>
+            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal">
+              <i class="bi bi-pencil"></i>
+            </button>
+          </div>
+          <ul class="list-unstyled">
+            <li class="mb-3">
+              <strong><i class="bi bi-card-text me-2 text-muted"></i>Cédula:</strong><br>
+              <span class="text-muted">1102345678</span>
+            </li>
+            <li class="mb-3">
+              <strong><i class="bi bi-envelope me-2 text-muted"></i>Email:</strong><br>
+              <span class="text-muted">juan.perez@email.com</span>
+            </li>
+            <li class="mb-3">
+              <strong><i class="bi bi-telephone me-2 text-muted"></i>Teléfono:</strong><br>
+              <span class="text-muted">+593 991234567</span>
+            </li>
+            <li class="mb-3">
+              <strong><i class="bi bi-calendar me-2 text-muted"></i>Miembro desde:</strong><br>
+              <span class="text-muted">Enero 2024</span>
+            </li>
+            <li>
+              <strong><i class="bi bi-house me-2 text-muted"></i>Dirección:</strong><br>
+              <span class="text-muted">Av. Universitaria y Azuay, Loja</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="row g-3 mb-4">
+          <div class="col-6">
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+              <i class="bi bi-map text-primary fs-1 mb-2"></i>
+              <div class="stat-number">15</div>
+              <small class="text-muted">Tours Completados</small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+              <i class="bi bi-star-fill text-warning fs-1 mb-2"></i>
+              <div class="stat-number">4.9</div>
+              <small class="text-muted">Calificación</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preferencias de Viaje -->
+        <div class="info-card p-4" data-aos="fade-up" data-aos-delay="300">
+          <h5 class="mb-3">
+            <i class="bi bi-heart-fill text-danger"></i> Preferencias de Viaje
+          </h5>
+          <div class="preferences-grid">
+            <div class="preference-item active">
+              <i class="bi bi-tree fs-2 text-success mb-2"></i>
+              <div>Ecoturismo</div>
+            </div>
+            <div class="preference-item">
+              <i class="bi bi-building fs-2 text-primary mb-2"></i>
+              <div>Cultura</div>
+            </div>
+            <div class="preference-item active">
+              <i class="bi bi-camera fs-2 text-warning mb-2"></i>
+              <div>Fotografía</div>
+            </div>
+            <div class="preference-item">
+              <i class="bi bi-cup-hot fs-2 text-brown mb-2"></i>
+              <div>Gastronomía</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actividad Reciente -->
+      <div class="col-lg-8">
+        <div class="info-card p-4 mb-4" data-aos="fade-up">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="mb-0">
+              <i class="bi bi-clock-history text-primary"></i> Actividad Reciente
+            </h5>
+            <a href="./pasaporte.html" class="btn btn-primary btn-custom">
+              <i class="bi bi-award"></i> Ver Pasaporte
+            </a>
+          </div>
+          
+          <div class="activity-timeline">
+            <div class="timeline-item" data-aos="fade-left" data-aos-delay="100">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <h6 class="fw-bold text-primary mb-1">Tour Completado: Centro Histórico de Loja</h6>
+                  <p class="text-muted mb-2">Visitaste la Catedral, Puerta de la Ciudad y museos locales</p>
+                  <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-success">Completado</span>
+                    <small class="text-muted">
+                      <i class="bi bi-calendar3"></i> Hace 3 días
+                    </small>
+                  </div>
+                </div>
+                <div class="text-warning">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-item" data-aos="fade-left" data-aos-delay="200">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <h6 class="fw-bold text-primary mb-1">Nuevo Logro Desbloqueado</h6>
+                  <p class="text-muted mb-2">"Explorador Cultural" - Visita 5 sitios históricos</p>
+                  <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-warning">🏆 Logro</span>
+                    <small class="text-muted">
+                      <i class="bi bi-calendar3"></i> Hace 5 días
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-item" data-aos="fade-left" data-aos-delay="300">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <h6 class="fw-bold text-primary mb-1">Tour Reservado: Valle de Vilcabamba</h6>
+                  <p class="text-muted mb-2">Aventura de bienestar y naturaleza programada</p>
+                  <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-info">Próximo</span>
+                    <small class="text-muted">
+                      <i class="bi bi-calendar3"></i> En 2 días
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tours Favoritos -->
+        <div class="info-card p-4" data-aos="fade-up" data-aos-delay="400">
+          <h5 class="mb-4">
+            <i class="bi bi-heart-fill text-danger"></i> Tours Favoritos
+          </h5>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Loja">
+                <div class="card-body">
+                  <h6 class="card-title">Centro Histórico de Loja</h6>
+                  <p class="card-text text-muted small">Tu tour más valorado</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-warning">
+                      <i class="bi bi-star-fill"></i>
+                      <span class="small">5.0</span>
+                    </div>
+                    <small class="text-muted">3 veces</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm">
+                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Vilcabamba">
+                <div class="card-body">
+                  <h6 class="card-title">Valle de Vilcabamba</h6>
+                  <p class="card-text text-muted small">Experiencia de bienestar</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-warning">
+                      <i class="bi bi-star-fill"></i>
+                      <span class="small">4.8</span>
+                    </div>
+                    <small class="text-muted">2 veces</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acciones Rápidas -->
+    <div class="row g-3 mt-4">
+      <div class="col-md-3">
+        <a href="./crea-tu-tour.html" class="btn btn-primary w-100 btn-custom" data-aos="zoom-in" data-aos-delay="100">
+          <i class="bi bi-plus-circle fs-4 d-block mb-2"></i>
+          <span>Crear Nuevo Tour</span>
+        </a>
+      </div>
+      <div class="col-md-3">
+        <a href="./tour.html" class="btn btn-success w-100 btn-custom" data-aos="zoom-in" data-aos-delay="200">
+          <i class="bi bi-play-circle fs-4 d-block mb-2"></i>
+          <span>Tour Actual</span>
+        </a>
+      </div>
+      <div class="col-md-3">
+        <a href="./pasaporte.html" class="btn btn-warning w-100 btn-custom" data-aos="zoom-in" data-aos-delay="300">
+          <i class="bi bi-award fs-4 d-block mb-2"></i>
+          <span>Mi Pasaporte</span>
+        </a>
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-info w-100 btn-custom" data-bs-toggle="modal" data-bs-target="#shareModal" data-aos="zoom-in" data-aos-delay="400">
+          <i class="bi bi-share fs-4 d-block mb-2"></i>
+          <span>Compartir Perfil</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para editar perfil -->
+  <div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">
+            <i class="bi bi-pencil-square"></i> Editar Perfil
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="editNombre" class="form-label">Nombre Completo</label>
+                <input type="text" class="form-control" id="editNombre" value="Juan Carlos Pérez">
+              </div>
+              <div class="col-md-6">
+                <label for="editCedula" class="form-label">Cédula</label>
+                <input type="text" class="form-control" id="editCedula" value="1102345678">
+              </div>
+              <div class="col-md-6">
+                <label for="editEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="editEmail" value="juan.perez@email.com">
+              </div>
+              <div class="col-md-6">
+                <label for="editTelefono" class="form-label">Teléfono</label>
+                <input type="tel" class="form-control" id="editTelefono" value="+593 991234567">
+              </div>
+              <div class="col-12">
+                <label for="editDireccion" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="editDireccion" value="Av. Universitaria y Azuay, Loja">
+              </div>
+              <div class="col-12">
+                <label for="editBio" class="form-label">Biografía</label>
+                <textarea class="form-control" id="editBio" rows="3">Amante de la cultura y la naturaleza. Siempre buscando nuevas aventuras por el hermoso sur de Ecuador.</textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="guardarPerfil()">Guardar Cambios</button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Modal para cambiar avatar -->
+  <div class="modal fade" id="avatarModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi bi-camera"></i> Cambiar Foto de Perfil
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="mb-4">
+            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Avatar actual" class="rounded-circle mb-3" width="120" height="120">
+            <p class="text-muted">Foto actual</p>
+          </div>
+          <div class="row g-3">
+            <div class="col-4">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" class="img-fluid rounded-circle avatar-option" alt="Opción 1" onclick="selectAvatar(this)">
+            </div>
+            <div class="col-4">
+              <img src="https://randomuser.me/api/portraits/men/45.jpg" class="img-fluid rounded-circle avatar-option" alt="Opción 2" onclick="selectAvatar(this)">
+            </div>
+            <div class="col-4">
+              <img src="https://randomuser.me/api/portraits/men/67.jpg" class="img-fluid rounded-circle avatar-option" alt="Opción 3" onclick="selectAvatar(this)">
+            </div>
+          </div>
+          <div class="mt-3">
+            <label for="fileInput" class="btn btn-outline-primary">
+              <i class="bi bi-upload"></i> Subir Imagen
+            </label>
+            <input type="file" id="fileInput" class="d-none" accept="image/*">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="cambiarAvatar()">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para compartir perfil -->
+  <div class="modal fade" id="shareModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi bi-share"></i> Compartir mi Perfil
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="mb-4">
+            <div class="bg-light p-3 rounded-3 d-inline-block mb-3">
+              <div id="qrcode"></div>
+            </div>
+            <p class="text-muted">Código QR de tu perfil</p>
+          </div>
+          <div class="mb-4">
+            <label class="form-label">Enlace directo:</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="profileLink" value="https://viajaloja.com/perfil/juan-perez" readonly>
+              <button class="btn btn-outline-primary" onclick="copyLink()">
+                <i class="bi bi-clipboard"></i>
+              </button>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center gap-3">
+            <button class="btn btn-primary" onclick="shareWhatsApp()">
+              <i class="bi bi-whatsapp"></i> WhatsApp
+            </button>
+            <button class="btn btn-info" onclick="shareFacebook()">
+              <i class="bi bi-facebook"></i> Facebook
+            </button>
+            <button class="btn btn-dark" onclick="shareTwitter()">
+              <i class="bi bi-twitter"></i> Twitter
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script>
+    // Inicializar AOS
+    AOS.init({ duration: 800, once: true });
+
+    // Generar QR Code
+    document.addEventListener('DOMContentLoaded', function() {
+      const qrContainer = document.getElementById('qrcode');
+      if (qrContainer && typeof QRCode !== 'undefined') {
+        QRCode.toCanvas(qrContainer, 'https://viajaloja.com/perfil/juan-perez', {
+          width: 150,
+          height: 150,
+          colorDark: '#2E7D32',
+          colorLight: '#FFFFFF'
+        });
+      }
+    });
+
+    let avatarSeleccionado = null;
+
+    // Funciones para el perfil
+    function guardarPerfil() {
+      const nombre = document.getElementById('editNombre').value;
+      const email = document.getElementById('editEmail').value;
+      const telefono = document.getElementById('editTelefono').value;
+      
+      if (!nombre || !email) {
+        alert('Por favor completa los campos obligatorios');
+        return;
+      }
+      
+      // Simular guardado
+      showNotification('Perfil actualizado exitosamente', 'success');
+      bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+    }
+
+    function selectAvatar(img) {
+      // Remover selección anterior
+      document.querySelectorAll('.avatar-option').forEach(opt => {
+        opt.classList.remove('border', 'border-primary', 'border-3');
+      });
+      
+      // Seleccionar nuevo avatar
+      img.classList.add('border', 'border-primary', 'border-3');
+      avatarSeleccionado = img.src;
+    }
+
+    function cambiarAvatar() {
+      if (avatarSeleccionado) {
+        // Cambiar avatar en todos los lugares
+        document.querySelectorAll('img[alt="Foto de perfil"], img[alt="Avatar actual"]').forEach(img => {
+          img.src = avatarSeleccionado;
+        });
+        
+        showNotification('Avatar cambiado exitosamente', 'success');
+        bootstrap.Modal.getInstance(document.getElementById('avatarModal')).hide();
+      } else {
+        alert('Por favor selecciona un avatar');
+      }
+    }
+
+    function copyLink() {
+      const linkInput = document.getElementById('profileLink');
+      linkInput.select();
+      document.execCommand('copy');
+      showNotification('Enlace copiado al portapapeles', 'success');
+    }
+
+    function shareWhatsApp() {
+      const text = encodeURIComponent('¡Mira mi perfil de viajero en Viaja a Loja! https://viajaloja.com/perfil/juan-perez');
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+    }
+
+    function shareFacebook() {
+      const url = encodeURIComponent('https://viajaloja.com/perfil/juan-perez');
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+    }
+
+    function shareTwitter() {
+      const text = encodeURIComponent('¡Mira mi perfil de viajero en Viaja a Loja!');
+      const url = encodeURIComponent('https://viajaloja.com/perfil/juan-perez');
+      window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+    }
+
+    // Sistema de notificaciones
+    function showNotification(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast align-items-center text-white bg-${type} border-0`;
+      toast.setAttribute('role', 'alert');
+      toast.style.position = 'fixed';
+      toast.style.top = '20px';
+      toast.style.right = '20px';
+      toast.style.zIndex = '1055';
+      toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">
+            <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+            ${message}
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+      `;
+      
+      document.body.appendChild(toast);
+      const bsToast = new bootstrap.Toast(toast);
+      bsToast.show();
+      
+      setTimeout(() => {
+        toast.remove();
+      }, 5000);
+    }
+
+    // Animación de números al cargar
+    function animateNumbers() {
+      const numbers = document.querySelectorAll('.stat-number');
+      numbers.forEach(num => {
+        const target = parseInt(num.textContent);
+        let current = 0;
+        const increment = target / 30;
+        
+        const timer = setInterval(() => {
+          current += increment;
+          num.textContent = Math.floor(current);
+          
+          if (current >= target) {
+            num.textContent = target;
+            clearInterval(timer);
+          }
+        }, 50);
+      });
+    }
+
+    // Inicializar animaciones
+    window.addEventListener('load', () => {
+      setTimeout(animateNumbers, 500);
+    });
+
+    // Toggle preferencias
+    document.querySelectorAll('.preference-item').forEach(item => {
+      item.addEventListener('click', function() {
+        this.classList.toggle('active');
+      });
+    });
+
+    // Manejo de subida de archivos
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          // Crear preview del archivo subido
+          const preview = document.createElement('img');
+          preview.src = e.target.result;
+          preview.className = 'img-fluid rounded-circle border border-success border-3';
+          preview.style.cursor = 'pointer';
+          preview.onclick = () => selectAvatar(preview);
+          
+          // Agregar a las opciones
+          const container = document.querySelector('.row.g-3');
+          const col = document.createElement('div');
+          col.className = 'col-4';
+          col.appendChild(preview);
+          container.appendChild(col);
+          
+          // Seleccionar automáticamente
+          selectAvatar(preview);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+
+  <style>
+    .avatar-option {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      height: 80px;
+      object-fit: cover;
+    }
+    
+    .avatar-option:hover {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+    
+    .toast {
+      animation: slideInRight 0.3s ease;
+    }
+    
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+  </style>
 </body>
 </html>
